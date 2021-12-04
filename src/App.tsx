@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Grow, Grid } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
+// @ts-ignore:next-line
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Posts from './components/Posts/Posts'
 import Form from './components/Form/Form'
 import { getPosts } from './actions/posts'
-// import useStyles from './styles';
 import Header from './components/Header/Header'
 import Signin from './components/Signin/Signin'
 import Register from './components/Register/Register'
-import card from './components/card'
+import { Post as PostType } from './reducers/posts'
 import { useSelector } from 'react-redux'
+
+type State = {
+    posts: PostType[]
+}
+
 const App = () => {
-    const [currentId, setCurrentId] = useState(0)
+    const [currentId, setCurrentId] = useState('')
     const [input, setInput] = useState('')
     const dispatch = useDispatch()
     // const classes = useStyles();
@@ -21,13 +26,13 @@ const App = () => {
         dispatch(getPosts())
     }, [currentId, dispatch])
 
-    // const posts = useSelector((state) => state.posts)
-    // console.log(posts, 'this is post')
+    const posts = useSelector((state: State) => state.posts)
+    console.log(posts, 'this is post')
 
     return (
         <Router>
             <Container maxWidth="lg">
-                <Header input={input} setInput={setInput} posts={posts} />
+                <Header setInput={setInput} />
                 <Grow in>
                     <Switch>
                         <Container>
@@ -41,7 +46,15 @@ const App = () => {
                                     <Route
                                         exact
                                         path="/"
-                                        render={(props) => (
+                                        render={(
+                                            props: JSX.IntrinsicAttributes & {
+                                                setCurrentId: React.Dispatch<
+                                                    React.SetStateAction<string>
+                                                >
+                                                input: string
+                                                currentId: string
+                                            }
+                                        ) => (
                                             <Posts
                                                 {...props}
                                                 input={input}
@@ -55,7 +68,15 @@ const App = () => {
                                     <Route
                                         exact
                                         path="/"
-                                        render={(props) => (
+                                        render={(
+                                            props: JSX.IntrinsicAttributes & {
+                                                setCurrentId: React.Dispatch<
+                                                    React.SetStateAction<string>
+                                                >
+                                                input: string
+                                                currentId: string
+                                            }
+                                        ) => (
                                             <Form
                                                 {...props}
                                                 setCurrentId={setCurrentId}
@@ -71,7 +92,6 @@ const App = () => {
                                 path="/register"
                                 component={Register}
                             />
-                            <Route exact path="/card" component={card} />
                         </Container>
                     </Switch>
                 </Grow>

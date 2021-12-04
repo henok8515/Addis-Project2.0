@@ -4,14 +4,21 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import { useDispatch } from 'react-redux'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
-
+import { Post as PostType } from '../../../reducers/posts'
 // import useStyles from './styles';
 import EditIcon from '@mui/icons-material/Edit'
 import { DELETE } from '../../../constants/actionTypes'
-const Post = ({ post, setCurrentId, currentId }) => {
+
+type Props = {
+    currentId: string
+    post: PostType
+    setCurrentId: React.Dispatch<React.SetStateAction<string>>
+}
+
+const Post = ({ post, setCurrentId, currentId }: Props) => {
     const dispatch = useDispatch()
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card>
             <div
                 style={{
                     display: 'flex',
@@ -78,7 +85,7 @@ const Post = ({ post, setCurrentId, currentId }) => {
                     size="small"
                     onClick={() => setCurrentId(post._id)}
                 >
-                    <EditIcon fontSize="default" />
+                    <EditIcon fontSize="small" />
                 </Button>
             </CardActions>
         </Card>

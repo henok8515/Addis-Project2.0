@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, Typography, Paper } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
+// @ts-ignore:next-line
 import FileBase from 'react-file-base64'
 import useStyles from './styles'
-import { CREATE, UPDATE } from '../../constants/actionTypes'
+import { CREATE } from '../../constants/actionTypes'
+import { Post as PostType } from '../../reducers/posts'
+import { updatePost } from '../../actions/posts'
 
-const Form = ({ currentId, setCurrentId }) => {
-    const [postData, setPostData] = useState({
+type State = {
+    posts: PostType[]
+}
+type Props = {
+    setCurrentId: React.Dispatch<React.SetStateAction<string>>
+    input: string
+    currentId: string
+}
+
+const Form = ({ currentId, setCurrentId }: Props) => {
+    const [postData, setPostData] = useState<PostType>({
         creator: '',
         title: '',
         message: '',
         tags: '',
         selectedFile: '',
         email: '',
+        _id: '',
     })
-    const post = useSelector((state) =>
+    const post = useSelector((state: State) =>
         currentId
             ? state.posts.find((message) => message._id === currentId)
             : null
@@ -27,7 +40,7 @@ const Form = ({ currentId, setCurrentId }) => {
     }, [post])
 
     const clear = () => {
-        setCurrentId(0)
+        setCurrentId('')
         setPostData({
             creator: '',
             title: '',
@@ -35,26 +48,33 @@ const Form = ({ currentId, setCurrentId }) => {
             tags: '',
             selectedFile: '',
             email: '',
+            _id: '',
         })
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
-        if (postData.creator === '') {
+        if (
+            (postData.creator,
+            postData.title,
+            postData.message,
+            postData.tags === '')
+        ) {
             return
         }
 
-        if (currentId === 0) {
+        if (currentId === '') {
             dispatch({ type: CREATE, payload: postData })
             console.log('this is createa')
             clear()
         } else {
-            dispatch({ type: UPDATE, payload: postData(currentId) })
+            dispatch(updatePost(postData, currentId))
             clear()
         }
     }
 
-    const formRef = React.useRef()
+    const formRef = React.useRef<HTMLFormElement>(null)
+
     return (
         <Paper className={classes.paper}>
             <form
@@ -64,8 +84,10 @@ const Form = ({ currentId, setCurrentId }) => {
                 className={`${classes.root} ${classes.form}`}
                 onSubmit={handleSubmit}
             >
-                <Typography required underline variant="h4">
-                    {currentId ? `Editing "${post.creator}"` : 'Add  Employee '}
+                <Typography variant="h6">
+                    {currentId
+                        ? `Editing "${post?.creator}"`
+                        : 'Add  Employee '}
                 </Typography>
                 <TextField
                     required
@@ -74,11 +96,12 @@ const Form = ({ currentId, setCurrentId }) => {
                     label="Full Name  "
                     fullWidth
                     value={postData.creator}
-                    onChange={(e) =>
+                    onChange={(e: { target: { value: any } }) =>
                         setPostData({ ...postData, creator: e.target.value })
                     }
                 />
                 <TextField
+                    required
                     name="Job-Title"
                     variant="outlined"
                     label="Job -Title"
@@ -89,6 +112,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     }
                 />
                 <TextField
+                    required
                     name="email"
                     type="email"
                     variant="outlined"
@@ -100,6 +124,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     }
                 />
                 <TextField
+                    required
                     type="number"
                     name="tags"
                     variant="outlined"
@@ -109,7 +134,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     onChange={(e) =>
                         setPostData({
                             ...postData,
-                            tags: e.target.value.split(','),
+                            tags: e.target.value,
                         })
                     }
                 />
@@ -117,13 +142,13 @@ const Form = ({ currentId, setCurrentId }) => {
                     <FileBase
                         type="file"
                         multiple={false}
-                        onDone={({ base64 }) =>
+                        onDone={({ base64 }: any) =>
                             setPostData({ ...postData, selectedFile: base64 })
                         }
                     />
                 </div>
                 <Button
-                    onClick={() => formRef.current.reportValidity()}
+                    onClick={() => formRef.current?.reportValidity()}
                     className={classes.buttonSubmit}
                     variant="contained"
                     color="primary"
