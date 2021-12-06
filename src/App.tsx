@@ -7,8 +7,8 @@ import Posts from './components/Posts/Posts'
 import Form from './components/Form/Form'
 import { getPosts } from './actions/posts'
 import Header from './components/Header/Header'
-import Signin from './components/Signin/Signin'
-import Register from './components/Register/Register'
+// import Signin from './components/Signin/Signin'
+// import Register from './components/Register/Register'
 import { Post as PostType } from './reducers/posts'
 import { useSelector } from 'react-redux'
 
@@ -86,12 +86,12 @@ const App = () => {
                                     />
                                 </Grid>
                             </Grid>
-                            <Route exact path="/signin" component={Signin} />
+                            {/* <Route exact path="/signin" component={Signin} />
                             <Route
                                 exact
                                 path="/register"
                                 component={Register}
-                            />
+                            /> */}
                         </Container>
                     </Switch>
                 </Grow>

@@ -54,12 +54,7 @@ const Form = ({ currentId, setCurrentId }: Props) => {
 
     const handleSubmit = async (e: { preventDefault: () => void }) => {
         e.preventDefault()
-        if (
-            (postData.creator,
-            postData.title,
-            postData.message,
-            postData.tags === '')
-        ) {
+        if (postData.message === '') {
             return
         }
 
@@ -68,7 +63,7 @@ const Form = ({ currentId, setCurrentId }: Props) => {
             console.log('this is createa')
             clear()
         } else {
-            dispatch(updatePost(postData, currentId))
+            dispatch(updatePost(currentId, postData))
             clear()
         }
     }

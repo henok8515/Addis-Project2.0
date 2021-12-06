@@ -6,8 +6,8 @@ import {
     LIKE,
 } from '../constants/actionTypes'
 import { takeEvery, put, call } from 'redux-saga/effects'
-
 import * as api from '../api/index'
+
 // function* fetchPost() {
 //     try {
 //         const { data } = yield call( api.fetchPosts)
@@ -19,6 +19,7 @@ import * as api from '../api/index'
 //        yield put( {message: e.message});
 //     }
 //  }
+
 function* createPost(post: any) {
     try {
         const { data } = yield call(api.createPost, post)
@@ -28,8 +29,7 @@ function* createPost(post: any) {
         yield put({ type: 'FAILED', error })
     }
 }
-// function* updatePost(id: string, post: any, e: any) {
-//     console.log(e)
+// function* updatePost(id: string, post: any) {
 //     try {
 //         const { data } = yield call(api.updatePost, id, post)
 
@@ -61,7 +61,7 @@ export function* mySaga() {
     yield [
         //   takeLatest(FETCH_ALL, fetchPost),
         takeEvery(CREATE, createPost),
-        //   takeEvery(UPDATE, updatePost),
+        // takeEvery(UPDATE, updatePost),
         takeEvery(LIKE, likePost),
         takeEvery(DELETE, deletePost),
     ]
