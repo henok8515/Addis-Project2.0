@@ -4,10 +4,10 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import { useDispatch } from 'react-redux'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
-import { Post as PostType } from '../../../reducers/posts'
+import { Post as PostType } from '../../../ducks/ducks'
 // import useStyles from './styles';
 import EditIcon from '@mui/icons-material/Edit'
-import { DELETE } from '../../../constants/actionTypes'
+import { DELETE, UPDATE } from '../../../constants/actionTypes'
 
 type Props = {
     currentId: string
@@ -17,6 +17,12 @@ type Props = {
 
 const Post = ({ post, setCurrentId, currentId }: Props) => {
     const dispatch = useDispatch()
+
+    const idUpdater = () => {
+        setCurrentId(post._id)
+        console.log(post._id, 'PSOST ID')
+    }
+
     return (
         <Card>
             <div
@@ -83,7 +89,12 @@ const Post = ({ post, setCurrentId, currentId }: Props) => {
                 <Button
                     style={{ color: 'blue' }}
                     size="small"
-                    onClick={() => setCurrentId(post._id)}
+                    onClick={() =>
+                        dispatch({
+                            type: UPDATE,
+                            payload: idUpdater,
+                        })
+                    }
                 >
                     <EditIcon fontSize="small" />
                 </Button>

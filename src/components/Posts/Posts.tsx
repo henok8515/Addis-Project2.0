@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, CircularProgress } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { Post as PostType } from '../../reducers/posts'
+import { Post as PostType } from '../../ducks/ducks'
 import Post from './Post/Post'
 import useStyles from './styles'
 

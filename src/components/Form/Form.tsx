@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 // @ts-ignore:next-line
 import FileBase from 'react-file-base64'
 import useStyles from './styles'
-import { CREATE } from '../../constants/actionTypes'
-import { Post as PostType } from '../../reducers/posts'
-import { updatePost } from '../../actions/posts'
+import { CREATE, UPDATE } from '../../constants/actionTypes'
+import { Post as PostType } from '../../ducks/ducks'
 
 type State = {
     posts: PostType[]
@@ -63,7 +62,7 @@ const Form = ({ currentId, setCurrentId }: Props) => {
             console.log('this is createa')
             clear()
         } else {
-            dispatch(updatePost(currentId, postData))
+            dispatch({ type: UPDATE, payload: currentId, postData })
             clear()
         }
     }

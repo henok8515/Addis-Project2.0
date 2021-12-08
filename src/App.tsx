@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Posts from './components/Posts/Posts'
 import Form from './components/Form/Form'
-import { getPosts } from './actions/posts'
+import { getPosts } from './ducks/ducks'
 import Header from './components/Header/Header'
 // import Signin from './components/Signin/Signin'
 // import Register from './components/Register/Register'
-import { Post as PostType } from './reducers/posts'
+import { Post as PostType } from './ducks/ducks'
 import { useSelector } from 'react-redux'
 
 type State = {
